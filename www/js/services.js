@@ -2,7 +2,7 @@ angular.module('app')
 
 .factory(
     'Twitter',
-    function($q, $timeout){
+    function($q, $timeout, TwitterUser){
         'use strict';
 
         var service = {
@@ -41,6 +41,25 @@ angular.module('app')
                         defer.resolve(newTweets);
                     },
                     500
+                );
+
+                return defer.promise;
+            },
+            sendTweet: function (tweet){
+                var defer = $q.defer();
+
+                $timeout(
+                    function() {
+                        var newTweet = angular.copy(tweet);
+
+                        TwitterUser.getUser().then(
+                            function(user) {
+                                newTweet.user = user;
+                                defer.resolve(newTweet);
+                            }
+                        );
+                    },
+                    1000
                 );
 
                 return defer.promise;
@@ -130,6 +149,27 @@ angular.module('app')
                 url: 'https://twitter.com/asdvaughan/status/566103487281635328'
             }
         ];
+
+        return service;
+    }
+)
+
+.factory(
+    'TwitterUser',
+    function($q){
+        'use strict';
+
+        var service = {
+            getUser: function() {
+                return $q.when(
+                    {
+                        id: 'loicknuchel',
+                        name: 'Loïc Knuchel',
+                        avatar: 'https://pbs.twimg.com/profile_images/3133057797/81ea4e63c7078eec0a7c7d6ae57a3ce1_bigger.jpeg'
+                    }
+                );
+            }
+        };
 
         return service;
     }
