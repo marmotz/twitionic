@@ -1,0 +1,18 @@
+<ion-view>
+    <ion-header-bar class="bar-calm">
+        <h1 class="title">Timeline</h1>
+    </ion-header-bar>
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+
+        <div class="list">
+            <a class="item item-avatar" href="#" ng-repeat="tweet in tweets">
+                <img ng-src="{{tweet.user.avatar}}">
+                <h2>{{tweet.user.name}}</h2>
+                <p>{{tweet.content}}</p>
+            </a>
+        </div>
+
+        <ion-infinite-scroll on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>
